@@ -8,7 +8,8 @@ import './Blog.css';
 class Blog extends Component {
     
     state = {
-        posts: []
+        posts: [],
+        selectedPostID: null
     }
     //This lifecycle is best for http requests as HTTP
     //Requests are Side Effects
@@ -25,9 +26,17 @@ class Blog extends Component {
          this.setState({posts:updatedPosts});
       });
     }
+
+    postSelectedHandler = (id) =>{
+       this.setState({selectedPostID: id});
+    } 
     render () {
         const jsonposts = this.state.posts.map(mypost => {
-          return <Post title={mypost.title} key={mypost.id} author={mypost.author}/>;
+          return <Post 
+          title={mypost.title} 
+          key={mypost.id} 
+          author={mypost.author}
+          clicked={()=>this.postSelectedHandler(mypost.id)/*Gets the ID of post clicked*/}/>;
         });
         return (
             <div>
@@ -35,7 +44,7 @@ class Blog extends Component {
                    {jsonposts}
                 </section>
                 <section>
-                    <FullPost />
+                    <FullPost postid={this.state.selectedPostID} />
                 </section>
                 <section>
                     <NewPost />
