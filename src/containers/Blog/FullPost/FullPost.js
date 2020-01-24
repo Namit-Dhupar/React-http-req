@@ -10,13 +10,23 @@ class FullPost extends Component {
 
     componentDidMount () { //Because now we are adding and removing to and from the dom
         console.log(this.props);
+        this.loadedData();
+    }
+
+    componentDidUpdate () {  //So that a fullpost could load each time when a post is clicked on the same page as the URL also updates
+        console.log(this.props);
+        this.loadedData();
+    }
+
+
+    loadedData () {
         if ( this.props.match.params.id ) { //Due to routing
-            if ( !this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== this.props.match.params.id) ) {
+            if ( !this.state.loadedPost || (this.state.loadedPost && this.state.loadedPost.id !== +this.props.match.params.id) ) {
                 axios.get( '/posts/' + this.props.match.params.id )
                     .then( response => {
                         // console.log(response);
                         this.setState( { loadedPost: response.data } );
-                    } );
+                } );
             }
         }
     }
